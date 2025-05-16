@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  api-service:
+    build:
+      context: ./src/api
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_SERVICE=http://database-service:3001
+      - DATA_DIR=/data
+    depends_on:
+      - database-service
+
+  database-service:
+    build:
+      context: ./src/database
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - DATA_DIR=/data
+    volumes:
+      - data-storage:/data
+
+volumes:
+  data-storage:
+
+    # docker compose up
+    # docker compose down
+    # docker compose logs
+
+    # http://localhost:3000
+    # http://localhost:3001
+    # docker compose exec api-service bash
+    # docker compose exec database-service bash
